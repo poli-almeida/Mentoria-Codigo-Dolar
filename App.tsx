@@ -11,11 +11,276 @@ import {
   Coins,
   TrendingUp,
   Layers,
-  MoveRight
+  MoveRight,
+  ChevronRight,
+  Check,
+  Clock,
+  MessageCircle
 } from 'lucide-react';
 
-const WHATSAPP_LINK = "https://wa.me/5500000000000?text=Olá!%20Li%20sobre%20a%20mentoria%20e%20quero%20faturar%20em%20dólar.";
+const WHATSAPP_DESTINO = "5541996120258";
+const N8N_WEBHOOK_URL = "https://hanadigital-n8n.v0ujh2.easypanel.host/webhook/aplicacao-codigo-dolar"; 
 
+// --- Lead Qualification Modal Component ---
+const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    nome: '',
+    instagram: '',
+    faturamento: '',
+    ingles: '',
+    investimento: '',
+    motivo: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleNext = () => setStep(s => s + 1);
+  const handleBack = () => setStep(s => s - 1);
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    const payload = {
+      ...formData,
+      origem: "Landing Page O Código Dólar",
+      timestamp: new Date().toLocaleString('pt-BR')
+    };
+
+    /** 
+     * TÉCNICA DE DISPARO "SIMPLE REQUEST"
+     * Removemos o cabeçalho 'Content-Type: application/json' para evitar o preflight (OPTIONS) do CORS.
+     * O n8n receberá os dados no corpo da requisição.
+     */
+    try {
+      console.log("Iniciando disparo para n8n via Simple Request...");
+      
+      // Tentativa 1: Fetch com no-cors (Não gera erro de CORS, mas a resposta é opaca)
+      fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Ignora política de CORS do navegador
+        body: JSON.stringify(payload)
+      }).then(() => {
+        console.log("Requisição enviada ao n8n (Status Oculto via no-cors)");
+      }).catch(e => console.error("Falha no fetch:", e));
+
+      // Tentativa 2: Beacon (Redundância para garantir envio ao fechar aba ou instabilidade)
+      if (navigator.sendBeacon) {
+        const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
+        navigator.sendBeacon(N8N_WEBHOOK_URL, blob);
+        console.log("Beacon disparado como redundância.");
+      }
+
+    } catch (error) {
+      console.error("Erro ao tentar disparar automação:", error);
+    }
+
+    // Transição de UI (Sempre mostramos sucesso para o usuário)
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsFinished(true);
+    }, 1500);
+  };
+
+  const openWhatsAppFallback = () => {
+    const text = `*Nova Aplicação: O Código Dólar*%0A%0A*Nome:* ${formData.nome}%0A*Instagram:* ${formData.instagram}%0A*Faturamento:* ${formData.faturamento}%0A*Inglês:* ${formData.ingles}%0A*Investimento:* ${formData.investimento}%0A*Motivo:* ${formData.motivo}`;
+    window.open(`https://wa.me/${WHATSAPP_DESTINO}?text=${text}`, '_blank');
+  };
+
+  const closeAndReset = () => {
+    onClose();
+    setTimeout(() => {
+      setIsFinished(false);
+      setStep(1);
+      setFormData({ nome: '', instagram: '', faturamento: '', ingles: '', investimento: '', motivo: '' });
+    }, 500);
+  };
+
+  const progress = (step / 5) * 100;
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 bg-black/95 backdrop-blur-xl">
+      <div className="relative w-full max-w-xl bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-emerald-900/10">
+        
+        {!isFinished && (
+          <div className="absolute top-0 left-0 h-1 bg-zinc-800 w-full">
+            <div 
+              className="h-full bg-[#00C853] transition-all duration-500 ease-out" 
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        )}
+
+        <button onClick={closeAndReset} className="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors z-10">
+          <X size={24} />
+        </button>
+
+        <div className="p-8 md:p-12 pt-16">
+          {isFinished ? (
+            <div className="text-center py-10 reveal active">
+              <div className="w-20 h-20 bg-[#00C853]/10 border border-[#00C853]/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Check className="text-[#00C853]" size={40} />
+              </div>
+              <h4 className="text-3xl md:text-4xl font-display text-white mb-6">Aplicação Registrada</h4>
+              <p className="text-gray-400 text-lg leading-relaxed mb-10 text-balance">
+                Seu perfil entrou na nossa fila de análise. **Clique no botão abaixo** para confirmar seu envio via WhatsApp e acelerar o retorno.
+              </p>
+              
+              <div className="flex flex-col gap-4">
+                <button 
+                  onClick={openWhatsAppFallback}
+                  className="w-full flex items-center justify-center gap-3 py-5 bg-[#00C853] text-black rounded-full font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+                >
+                  <MessageCircle size={20} /> Confirmar no WhatsApp
+                </button>
+                <button 
+                  onClick={closeAndReset}
+                  className="w-full py-4 text-gray-500 hover:text-white font-bold text-[10px] uppercase tracking-widest transition-all"
+                >
+                  Pular e aguardar contato
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {step === 1 && (
+                <div className="reveal active">
+                  <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block italic">Passo 01/05</span>
+                  <h4 className="text-2xl md:text-3xl font-display text-white mb-8">Quem é o gestor por trás dessa aplicação?</h4>
+                  <div className="space-y-4">
+                    <div className="group">
+                      <label className="text-[9px] uppercase font-bold text-gray-500 ml-4 mb-2 block tracking-widest">Nome Completo</label>
+                      <input 
+                        type="text" 
+                        placeholder="Ex: João Silva" 
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-[#00C853] outline-none transition-all"
+                        value={formData.nome}
+                        onChange={e => setFormData({...formData, nome: e.target.value})}
+                      />
+                    </div>
+                    <div className="group">
+                      <label className="text-[9px] uppercase font-bold text-gray-500 ml-4 mb-2 block tracking-widest">Instagram Profissional</label>
+                      <input 
+                        type="text" 
+                        placeholder="@seu.perfil" 
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-[#00C853] outline-none transition-all"
+                        value={formData.instagram}
+                        onChange={e => setFormData({...formData, instagram: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="reveal active">
+                  <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block italic">Passo 02/05</span>
+                  <h4 className="text-2xl md:text-3xl font-display text-white mb-8">Qual seu faturamento médio mensal hoje?</h4>
+                  <div className="grid gap-3">
+                    {['Até R$ 5k', 'R$ 5k - R$ 10k', 'R$ 10k - R$ 30k', 'Acima de R$ 30k'].map(opt => (
+                      <button 
+                        key={opt}
+                        onClick={() => { setFormData({...formData, faturamento: opt}); handleNext(); }}
+                        className={`text-left px-6 py-4 rounded-2xl border transition-all ${formData.faturamento === opt ? 'bg-[#00C853]/10 border-[#00C853] text-[#00C853]' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {step === 3 && (
+                <div className="reveal active">
+                  <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block italic">Passo 03/05</span>
+                  <h4 className="text-2xl md:text-3xl font-display text-white mb-8">Como você avalia seu nível de inglês?</h4>
+                  <div className="grid gap-3">
+                    {['Básico / Uso Tradutor', 'Intermediário / Leio bem', 'Fluente / Falo com confiança'].map(opt => (
+                      <button 
+                        key={opt}
+                        onClick={() => { setFormData({...formData, ingles: opt}); handleNext(); }}
+                        className={`text-left px-6 py-4 rounded-2xl border transition-all ${formData.ingles === opt ? 'bg-[#00C853]/10 border-[#00C853] text-[#00C853]' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {step === 4 && (
+                <div className="reveal active">
+                  <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block italic">Passo 04/05</span>
+                  <h4 className="text-2xl md:text-3xl font-display text-white mb-8">Pronto para investir no seu próximo nível?</h4>
+                  <div className="grid gap-3">
+                    {['Sim, quero investir agora', 'Estou me planejando financeiramente', 'Busco apenas informações gratuitas'].map(opt => (
+                      <button 
+                        key={opt}
+                        onClick={() => { setFormData({...formData, investimento: opt}); handleNext(); }}
+                        className={`text-left px-6 py-4 rounded-2xl border transition-all ${formData.investimento === opt ? 'bg-[#00C853]/10 border-[#00C853] text-[#00C853]' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {step === 5 && (
+                <div className="reveal active">
+                  <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block italic">Passo 05/05</span>
+                  <h4 className="text-2xl md:text-3xl font-display text-white mb-8">Por que você merece uma das vagas exclusivas?</h4>
+                  <textarea 
+                    placeholder="Fale brevemente sobre sua ambição e comprometimento..." 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-[#00C853] outline-none transition-all h-32 resize-none"
+                    value={formData.motivo}
+                    onChange={e => setFormData({...formData, motivo: e.target.value})}
+                  />
+                  <div className="mt-4 flex items-center gap-2 text-[#00C853]">
+                    <Clock size={14} />
+                    <span className="text-[9px] uppercase font-bold tracking-widest">Tempo estimado de preenchimento: 2 min</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-12 flex items-center justify-between gap-4">
+                {step > 1 && (
+                  <button onClick={handleBack} className="text-gray-500 hover:text-white font-bold text-[10px] uppercase tracking-widest transition-colors">
+                    Voltar
+                  </button>
+                )}
+                <div className="flex-1" />
+                {step === 1 && (
+                  <button 
+                    disabled={!formData.nome || !formData.instagram}
+                    onClick={handleNext} 
+                    className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-widest disabled:opacity-30 flex items-center gap-2 transition-all active:scale-95"
+                  >
+                    Próximo <ChevronRight size={14} />
+                  </button>
+                )}
+                {step === 5 && (
+                  <button 
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || !formData.motivo}
+                    className="px-10 py-4 bg-[#00C853] text-black rounded-full font-black text-[10px] uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all"
+                  >
+                    {isSubmitting ? "Finalizando..." : "Enviar Minha Aplicação"} 
+                    {!isSubmitting && <Check size={14} />}
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Custom Reveal Hook ---
 const useReveal = () => {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -30,6 +295,8 @@ const useReveal = () => {
     return () => observer.disconnect();
   }, []);
 };
+
+// --- UI Components ---
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,58 +327,32 @@ const Navbar: React.FC = () => {
 
         <div className="hidden lg:flex items-center gap-10">
           {menuItems.map((item) => (
-            <a 
-              key={item.id} 
-              href={`#${item.id}`} 
-              className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 hover:text-white transition-all"
-            >
-              {item.name}
-            </a>
+            <a key={item.id} href={`#${item.id}`} className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 hover:text-white transition-all">{item.name}</a>
           ))}
-          <a 
-            href={WHATSAPP_LINK} 
-            className="group flex items-center gap-3 px-6 py-2.5 rounded-full border border-[#00C853]/40 text-[#00C853] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#00C853] hover:text-white transition-all duration-500"
-          >
-            Falar com a Mentora <ArrowUpRight size={14} />
-          </a>
+          <button className="group flex items-center gap-3 px-6 py-2.5 rounded-full border border-[#00C853]/40 text-[#00C853] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#00C853] hover:text-white transition-all duration-500">
+            Suporte Individual <ArrowUpRight size={14} />
+          </button>
         </div>
 
-        <button 
-          className="lg:hidden text-white p-2" 
-          onClick={() => setMobileMenu(!mobileMenu)}
-          aria-label="Toggle Menu"
-        >
+        <button className="lg:hidden text-white p-2" onClick={() => setMobileMenu(!mobileMenu)}>
           {mobileMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`lg:hidden fixed inset-0 bg-black z-50 flex flex-col items-center justify-center gap-8 p-6 transition-transform duration-500 ease-in-out ${mobileMenu ? 'translate-x-0' : 'translate-x-full'}`}>
-           <button className="absolute top-8 right-6 text-white" onClick={() => setMobileMenu(false)} aria-label="Close Menu">
+      <div className={`lg:hidden fixed inset-0 bg-black z-[110] flex flex-col items-center justify-center gap-8 p-6 transition-transform duration-500 ease-in-out ${mobileMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+           <button className="absolute top-8 right-6 text-white" onClick={() => setMobileMenu(false)}>
              <X size={32} />
            </button>
            {menuItems.map((item) => (
-            <a 
-              key={item.id} 
-              href={`#${item.id}`} 
-              onClick={() => setMobileMenu(false)} 
-              className="text-3xl font-display text-white tracking-widest hover:text-[#D4AF37] transition-colors"
-            >
-              {item.name}
-            </a>
+            <a key={item.id} href={`#${item.id}`} onClick={() => setMobileMenu(false)} className="text-3xl font-display text-white tracking-widest">{item.name}</a>
           ))}
-          <a 
-            href={WHATSAPP_LINK} 
-            className="px-10 py-5 rounded-full bg-[#00C853] text-black font-bold text-base uppercase tracking-widest shadow-lg active:scale-95 transition-transform"
-          >
-            Aplicar Agora
-          </a>
+          <button onClick={() => { setMobileMenu(false); }} className="px-10 py-5 rounded-full bg-[#00C853] text-black font-bold text-base uppercase tracking-widest shadow-lg">Aplicar Agora</button>
       </div>
     </nav>
   );
 };
 
-const Hero: React.FC = () => {
+const Hero = ({ onOpenForm }: { onOpenForm: () => void }) => {
   return (
     <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-24 md:pt-32 pb-16 overflow-hidden bg-[#050505]">
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -131,17 +372,17 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-lg md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-10 md:mb-16 font-light text-balance">
-            Aprenda a se posicionar para o mercado internacional e fechar seu primeiro contrato em dólar, mesmo sem falar inglês fluentemente, com o único acompanhamento que não termina enquanto você não assinar seu contrato.
+            Aprenda a se posicionar para o mercado internacional e fechar seu primeiro contrato em dólar, mesmo sem falar inglês fluentemente.
           </p>
 
           <div className="flex justify-center items-center">
-            <a 
-              href={WHATSAPP_LINK}
+            <button 
+              onClick={onOpenForm}
               className="w-full sm:w-auto group relative px-8 md:px-16 py-6 md:py-8 bg-[#00C853] text-black font-black text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.4em] rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(0,229,118,0.2)]"
             >
               Quero Iniciar Minha Aplicação
               <div className="absolute inset-0 bg-white/30 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -271,7 +512,7 @@ const About: React.FC = () => {
   );
 };
 
-const Admission: React.FC = () => {
+const Admission = ({ onOpenForm }: { onOpenForm: () => void }) => {
   return (
     <section id="admissao" className="py-24 md:py-40 bg-[#080808] relative overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6">
@@ -282,7 +523,7 @@ const Admission: React.FC = () => {
               FAÇA PARTE DO 1% DE GESTORES QUE ATUAM GLOBALMENTE
             </h3>
             <p className="text-base md:text-2xl lg:text-3xl text-gray-400 font-light max-w-4xl mx-auto leading-relaxed text-balance">
-              Para garantir o acompanhamento individual e o pacto de resultado incondicional, o processo de admissão é rigoroso. Eu não busco apenas alunos, busco parceiros de jornada prontos para a escala internacional.
+              Processo de admissão rigoroso para garantir suporte individual e resultados incondicionais.
             </p>
           </div>
           
@@ -308,14 +549,13 @@ const Admission: React.FC = () => {
           </div>
 
           <div className="mt-16 md:mt-24 text-center">
-            <a 
-              href={WHATSAPP_LINK} 
+            <button 
+              onClick={onOpenForm}
               className="w-full sm:w-auto group relative inline-flex items-center justify-center gap-6 px-10 md:px-24 py-6 md:py-12 bg-white text-black font-black text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.4em] rounded-full hover:bg-[#00C853] hover:text-white transition-all duration-500 shadow-[0_40px_100px_rgba(255,255,255,0.05)] active:scale-95"
             >
               Aplicar para Seleção
               <MoveRight className="hidden sm:block group-hover:translate-x-3 transition-transform" />
-            </a>
-            <p className="mt-10 md:mt-16 text-gray-800 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em]">Exclusividade e suporte individual garantidos.</p>
+            </button>
           </div>
         </div>
       </div>
@@ -340,19 +580,25 @@ const Footer: React.FC = () => {
 
 const App: React.FC = () => {
   useReveal();
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-black selection:bg-[#00C853]/30 selection:text-[#00C853] overflow-x-hidden">
       <Navbar />
       <main>
-        <Hero />
+        <Hero onOpenForm={() => setIsFormOpen(true)} />
         <Results />
         <ForWho />
         <Deliverables />
         <About />
-        <Admission />
+        <Admission onOpenForm={() => setIsFormOpen(true)} />
       </main>
       <Footer />
+      
+      <QualificationModal 
+        isOpen={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+      />
     </div>
   );
 };
