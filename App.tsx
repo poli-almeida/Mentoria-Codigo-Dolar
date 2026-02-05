@@ -8,21 +8,10 @@ import {
   Sparkles,
   CheckCircle2,
   Database,
-  Layout,
-  MessageSquare,
-  Calendar,
-  Gift,
-  PieChart,
-  BrainCircuit,
-  MousePointerClick,
-  Target,
-  ShieldCheck,
-  MoveRight,
+  Coins,
   TrendingUp,
-  DollarSign,
-  BarChart3,
   Layers,
-  Coins
+  MoveRight
 } from 'lucide-react';
 
 const WHATSAPP_LINK = "https://wa.me/5500000000000?text=Olá!%20Li%20sobre%20a%20mentoria%20e%20quero%20faturar%20em%20dólar.";
@@ -42,8 +31,6 @@ const useReveal = () => {
   }, []);
 };
 
-// --- Components ---
-
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -56,9 +43,9 @@ const Navbar: React.FC = () => {
 
   const menuItems = [
     { name: 'Resultados', id: 'resultados' },
-    { name: 'Diagnóstico', id: 'para-quem' },
-    { name: 'O que aprenderá', id: 'entrega' },
-    { name: 'Seleção', id: 'admissao' }
+    { name: 'Para você', id: 'para-quem' },
+    { name: 'Conteúdo', id: 'entrega' },
+    { name: 'Admissão', id: 'admissao' }
   ];
 
   return (
@@ -118,8 +105,8 @@ const Hero: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto text-center reveal">
           <div className="inline-flex items-center gap-3 mb-12 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-            <Coins size={14} className="text-[#D4AF37]" />
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Escala Internacional</span>
+            <Sparkles size={14} className="text-[#D4AF37]" />
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Escala Global Imediata</span>
           </div>
           
           <h1 className="text-5xl md:text-8xl lg:text-9xl font-display font-semibold leading-[1.05] text-white mb-12 tracking-tight text-balance">
@@ -190,7 +177,7 @@ const ForWho: React.FC = () => {
   return (
     <section id="para-quem" className="py-32 bg-black relative">
       <div className="container mx-auto px-6">
-        <div className="max-w-3xl mb-24 reveal">
+        <div className="max-w-4xl mb-24 reveal">
           <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.5em] mb-8 italic">O Diagnóstico</h2>
           <h3 className="text-4xl md:text-7xl font-display text-white leading-tight">Essa mentoria é <br/> <span className="text-[#00C853]">para você que...</span></h3>
         </div>
@@ -212,8 +199,8 @@ const ForWho: React.FC = () => {
 const Deliverables: React.FC = () => {
   const steps = [
     { title: "Engine: Tracking & Data", desc: "Configuração de elite de GTM, GA4 e API. O mercado internacional não aceita amadores que não medem dados.", icon: <Database /> },
-    { title: "Blueprint: Prospecção Multi-Moeda", desc: "Onde e como encontrar empresas USA, Europa e Austrália que pagam em moeda forte.", icon: <Globe /> },
-    { title: "Closing: Negociação & Fees", desc: "Scripts de fechamento e como cobrar fees de $2k USD/EUR por cliente sem tremer na base.", icon: <DollarSign /> },
+    { title: "Blueprint: Prospecção Ativa", desc: "Onde e como encontrar empresas USA, Europa e Austrália que pagam em moeda forte.", icon: <Globe /> },
+    { title: "Closing: Negociação & Fees", desc: "Scripts de fechamento e como cobrar fees de $2k USD/EUR por cliente sem tremer na base.", icon: <Coins /> },
     { title: "Scale: Gestão High-Ticket", desc: "Como manter os resultados e escalar as contas sem precisar de uma agência gigante.", icon: <Layers /> }
   ];
 
@@ -222,11 +209,11 @@ const Deliverables: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-end justify-between mb-24 reveal">
           <div className="max-w-2xl">
-            <h2 className="text-xs font-bold text-[#00C853] uppercase tracking-[0.6em] mb-8 italic">A Engenharia da Mentoria</h2>
+            <h2 className="text-xs font-bold text-[#00C853] uppercase tracking-[0.6em] mb-8 italic">A Metodologia</h2>
             <h3 className="text-4xl md:text-7xl font-display text-white">Tudo o que <span className="italic text-[#D4AF37]">você vai aprender.</span></h3>
           </div>
           <p className="text-gray-500 max-w-xs mt-8 md:mt-0 uppercase text-[10px] font-bold tracking-widest leading-relaxed">
-            Metodologia testada em Dólar, Euro, CAD e AUD.
+            Estratégia multimoeda: Dólar, Euro, CAD e AUD.
           </p>
         </div>
 
@@ -259,18 +246,8 @@ const About: React.FC = () => {
             <span className="text-gray-700">Gestora de Milhões.</span>
           </h3>
           <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-16 mx-auto max-w-2xl">
-            Com a didática de um mestrado e a experiência de quem já faturou em <strong className="text-white">Dólar, Euro, CAD e AUD</strong>, eu não apenas opero milhões; eu sei como te ensinar a dominar o mundo.
+            Unindo didática e prática operacional. Já faturei em <strong className="text-white">Dólar, Euro, CAD e AUD</strong>. Minha missão é te guiar até o contrato que vai mudar seu padrão de vida.
           </p>
-          <div className="flex flex-wrap justify-center gap-12 md:gap-24">
-            <div className="flex flex-col items-center">
-              <span className="text-4xl md:text-6xl font-display text-white">+04</span>
-              <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em] mt-2">Continentes Atuantes</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl md:text-6xl font-display text-white">4 Moedas</span>
-              <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em] mt-2">Faturamento Global</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -279,43 +256,41 @@ const About: React.FC = () => {
 
 const Admission: React.FC = () => {
   return (
-    <section id="admissao" className="py-40 bg-black relative overflow-hidden border-t border-white/5">
-      <div className="container mx-auto px-6 text-center flex flex-col items-center">
-        <div className="max-w-5xl mx-auto reveal flex flex-col items-center">
-          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.6em] mb-16 italic">Critérios de Admissão</h2>
-          
-          <div className="text-left max-w-5xl mx-auto">
-            <h3 className="text-4xl md:text-7xl lg:text-8xl font-display font-semibold text-white mb-12 leading-[1.1] tracking-tight text-center">
+    <section id="admissao" className="py-40 bg-[#080808] relative overflow-hidden border-t border-white/5">
+      <div className="container mx-auto px-6">
+        <div className="max-w-5xl mx-auto reveal">
+          <div className="text-center mb-24">
+            <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.6em] mb-12 italic">Critérios de Admissão</h2>
+            <h3 className="text-4xl md:text-7xl lg:text-8xl font-display font-semibold text-white mb-12 leading-tight tracking-tight">
               FAÇA PARTE DO 1% DE GESTORES QUE ATUAM GLOBALMENTE
             </h3>
-
-            <p className="text-xl md:text-3xl text-gray-400 font-light mb-24 leading-relaxed text-center max-w-4xl mx-auto">
+            <p className="text-xl md:text-3xl text-gray-400 font-light max-w-4xl mx-auto leading-relaxed">
               Para garantir o acompanhamento individual e o pacto de resultado incondicional, o processo de admissão é rigoroso. Eu não busco apenas alunos, busco parceiros de jornada prontos para a escala internacional.
             </p>
-            
-            <div className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-20">
-               <div className="flex gap-8 items-start">
-                  <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
-                    <CheckCircle2 className="text-[#00C853]" size={28} />
-                  </div>
-                  <div>
-                    <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Mentalidade Global</h5>
-                    <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Foco absoluto em deixar o amadorismo do Real para trás e abraçar o lucro em moeda forte.</p>
-                  </div>
-               </div>
-               <div className="flex gap-8 items-start">
-                  <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
-                    <CheckCircle2 className="text-[#00C853]" size={28} />
-                  </div>
-                  <div>
-                    <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Compromisso com o Método</h5>
-                    <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Seguir o passo-a-passo técnico (Tracking, Data, Closing) para garantir o ROI internacional.</p>
-                  </div>
-               </div>
-            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-20">
+             <div className="flex gap-8 items-start">
+                <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
+                  <CheckCircle2 className="text-[#00C853]" size={28} />
+                </div>
+                <div>
+                  <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Mentalidade Global</h5>
+                  <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Foco absoluto em deixar o amadorismo do Real para trás e abraçar o lucro em moeda forte.</p>
+                </div>
+             </div>
+             <div className="flex gap-8 items-start">
+                <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
+                  <CheckCircle2 className="text-[#00C853]" size={28} />
+                </div>
+                <div>
+                  <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Compromisso com o Método</h5>
+                  <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Seguir o passo-a-passo técnico (Tracking, Data, Closing) para garantir o ROI internacional.</p>
+                </div>
+             </div>
           </div>
 
-          <div className="mt-24">
+          <div className="mt-24 text-center">
             <a 
               href={WHATSAPP_LINK} 
               className="group relative inline-flex items-center gap-6 px-24 py-12 bg-white text-black font-black text-sm uppercase tracking-[0.4em] rounded-full hover:bg-[#00C853] hover:text-white transition-all duration-500 shadow-[0_40px_100px_rgba(255,255,255,0.05)]"
@@ -323,9 +298,8 @@ const Admission: React.FC = () => {
               Aplicar para Seleção
               <MoveRight className="group-hover:translate-x-3 transition-transform" />
             </a>
+            <p className="mt-16 text-gray-800 text-[10px] font-black uppercase tracking-[0.4em]">Vagas limitadas para suporte individual.</p>
           </div>
-          
-          <p className="mt-16 text-gray-800 text-[10px] font-black uppercase tracking-[0.4em]">Exclusividade e suporte individual garantidos.</p>
         </div>
       </div>
     </section>
@@ -334,21 +308,13 @@ const Admission: React.FC = () => {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="py-24 bg-black border-t border-white/5 relative overflow-hidden">
-      <div className="container mx-auto px-6 text-center relative z-10">
-        <div className="flex flex-col items-center gap-10 mb-16">
-          <span className="text-2xl font-display font-bold tracking-[0.5em] text-white">
-            O CÓDIGO <span className="text-[#D4AF37]">DÓLAR</span>
-          </span>
-          <a 
-            href={WHATSAPP_LINK}
-            className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00C853] hover:text-white transition-colors"
-          >
-            Aplicar para a próxima turma →
-          </a>
-        </div>
-        <p className="text-gray-800 text-[9px] uppercase font-bold tracking-[0.3em] max-w-2xl mx-auto leading-relaxed">
-          Programa focado em performance internacional multi-moeda. Copyright © {new Date().getFullYear()} - O Código Dólar.
+    <footer className="py-24 bg-black border-t border-white/5">
+      <div className="container mx-auto px-6 text-center">
+        <span className="text-2xl font-display font-bold tracking-[0.5em] text-white">
+          O CÓDIGO <span className="text-[#D4AF37]">DÓLAR</span>
+        </span>
+        <p className="mt-8 text-gray-800 text-[9px] uppercase font-bold tracking-[0.3em]">
+          Copyright © {new Date().getFullYear()} - O Código Dólar. Todos os direitos reservados.
         </p>
       </div>
     </footer>
@@ -359,7 +325,7 @@ const App: React.FC = () => {
   useReveal();
 
   return (
-    <div className="min-h-screen bg-black selection:bg-[#00C853]/30 selection:text-[#00C853] relative">
+    <div className="min-h-screen bg-black selection:bg-[#00C853]/30 selection:text-[#00C853]">
       <Navbar />
       <main>
         <Hero />
