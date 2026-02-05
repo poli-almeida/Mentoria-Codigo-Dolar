@@ -3,27 +3,26 @@ import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  ChevronRight, 
   Globe, 
-  Zap,
   ArrowUpRight,
   Sparkles,
-  Award,
   CheckCircle2,
-  Users,
-  Handshake,
-  Target,
-  LineChart,
-  MoveRight,
   Database,
   Layout,
   MessageSquare,
   Calendar,
   Gift,
-  Search,
   PieChart,
   BrainCircuit,
-  MousePointerClick
+  MousePointerClick,
+  Target,
+  ShieldCheck,
+  MoveRight,
+  TrendingUp,
+  DollarSign,
+  BarChart3,
+  Layers,
+  Coins
 } from 'lucide-react';
 
 const WHATSAPP_LINK = "https://wa.me/5500000000000?text=Olá!%20Li%20sobre%20a%20mentoria%20e%20quero%20faturar%20em%20dólar.";
@@ -56,21 +55,20 @@ const Navbar: React.FC = () => {
   }, []);
 
   const menuItems = [
-    { name: 'Público', id: 'para-quem' },
-    { name: 'Entrega', id: 'entrega' },
-    { name: 'Bônus', id: 'bonus' },
-    { name: 'A Mentora', id: 'mentora' },
-    { name: 'Aplicação', id: 'admissao' }
+    { name: 'Resultados', id: 'resultados' },
+    { name: 'Diagnóstico', id: 'para-quem' },
+    { name: 'O que aprenderá', id: 'entrega' },
+    { name: 'Seleção', id: 'admissao' }
   ];
 
   return (
-    <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'bg-black/80 backdrop-blur-2xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed top-0 w-full z-[100] transition-all duration-700 ${isScrolled ? 'bg-black/95 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="flex flex-col group cursor-pointer">
           <span className="text-xl md:text-2xl font-display font-bold tracking-[0.2em] text-white">
             O CÓDIGO <span className="text-[#D4AF37] text-glow-gold">DÓLAR</span>
           </span>
-          <div className="h-[1px] w-0 group-hover:w-full bg-[#D4AF37] transition-all duration-500" />
+          <div className="h-[1px] w-0 group-hover:w-full bg-[#D4AF37] transition-all duration-700" />
         </div>
 
         <div className="hidden lg:flex items-center gap-10">
@@ -78,16 +76,16 @@ const Navbar: React.FC = () => {
             <a 
               key={item.id} 
               href={`#${item.id}`} 
-              className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-500 hover:text-white transition-all"
+              className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 hover:text-white transition-all"
             >
               {item.name}
             </a>
           ))}
           <a 
             href={WHATSAPP_LINK} 
-            className="group flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#00C853]/40 text-[#00C853] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#00C853] hover:text-white transition-all duration-500"
+            className="group flex items-center gap-3 px-6 py-2.5 rounded-full border border-[#00C853]/40 text-[#00C853] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#00C853] hover:text-white transition-all duration-500"
           >
-            Falar com a Equipe <ArrowUpRight size={14} />
+            Falar com a Mentora <ArrowUpRight size={14} />
           </a>
         </div>
 
@@ -97,12 +95,12 @@ const Navbar: React.FC = () => {
       </div>
 
       {mobileMenu && (
-        <div className="lg:hidden fixed inset-0 bg-black z-50 flex flex-col items-center justify-center gap-8 p-6 animate-in fade-in duration-300">
+        <div className="lg:hidden fixed inset-0 bg-black z-50 flex flex-col items-center justify-center gap-8 p-6">
            <button className="absolute top-8 right-6 text-white" onClick={() => setMobileMenu(false)}><X size={32} /></button>
            {menuItems.map((item) => (
             <a key={item.id} href={`#${item.id}`} onClick={() => setMobileMenu(false)} className="text-3xl font-display text-white tracking-widest">{item.name}</a>
           ))}
-          <a href={WHATSAPP_LINK} className="px-12 py-4 rounded-full bg-[#00C853] text-white font-bold text-lg uppercase tracking-widest">Aplicar Agora</a>
+          <a href={WHATSAPP_LINK} className="px-12 py-4 rounded-full bg-[#00C853] text-black font-bold text-lg uppercase tracking-widest">Aplicar Agora</a>
         </div>
       )}
     </nav>
@@ -111,38 +109,35 @@ const Navbar: React.FC = () => {
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#0A0A0A]">
-      <div className="absolute top-0 left-0 w-full h-full opacity-25 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-[#00C853]/10 rounded-full blur-[200px]" />
-        <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[180px]" />
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050505]">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-[#00C853]/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#D4AF37]/5 rounded-full blur-[150px]" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto text-center reveal">
-          <div className="inline-flex items-center gap-3 mb-12 px-6 py-2 rounded-full glass-card border-white/10">
-            <Sparkles size={14} className="text-[#D4AF37]" />
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 italic">Transição Global 2025</span>
+          <div className="inline-flex items-center gap-3 mb-12 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <Coins size={14} className="text-[#D4AF37]" />
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Escala Internacional</span>
           </div>
           
-          <h1 className="text-4xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-semibold leading-[1.1] text-white mb-12 tracking-tight max-w-5xl mx-auto text-balance">
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-display font-semibold leading-[1.05] text-white mb-12 tracking-tight text-balance">
             Saia do tráfego em real e fature em <span className="italic text-[#D4AF37]">dólar em 30 dias.</span>
           </h1>
           
-          <p className="text-lg md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-16 font-light">
-            Aprenda a se posicionar para o mercado internacional e fechar seu primeiro contrato em dólar, <strong className="text-white">mesmo sem falar inglês fluentemente</strong>, com o único acompanhamento que não termina enquanto você não assinar seu contrato.
+          <p className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-16 font-light">
+            Aprenda a se posicionar para o mercado internacional e fechar seu primeiro contrato em dólar, mesmo sem falar inglês fluentemente, com o único acompanhamento que não termina enquanto você não assinar seu contrato.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+          <div className="flex flex-col md:row gap-8 justify-center items-center">
             <a 
               href={WHATSAPP_LINK}
-              className="group relative px-12 py-8 bg-[#00C853] text-white font-black text-xs uppercase tracking-[0.4em] rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_30px_90px_rgba(0,200,83,0.3)]"
+              className="group relative px-16 py-8 bg-[#00C853] text-black font-black text-sm uppercase tracking-[0.4em] rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_20px_50px_rgba(0,229,118,0.2)]"
             >
-              Aplicar para a Mentoria
-              <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              Quero Iniciar Minha Aplicação
+              <div className="absolute inset-0 bg-white/30 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </a>
-            <div className="flex items-center gap-4 text-gray-600 text-[10px] font-bold uppercase tracking-widest">
-              <Users size={16} /> Apenas para gestores comprometidos
-            </div>
           </div>
         </div>
       </div>
@@ -150,26 +145,62 @@ const Hero: React.FC = () => {
   );
 };
 
+const Results: React.FC = () => {
+  const metrics = [
+    { label: "Volume Gerenciado", value: "+R$ 1.2M", sub: "Mensais Globalmente", icon: <Database className="text-[#00C853]" /> },
+    { label: "Moedas Aceitas", value: "USD/EUR", sub: "CAD & AUD inclusos", icon: <Coins className="text-[#D4AF37]" /> },
+    { label: "Lucro Multiplicado", value: "5.2x", sub: "Média de conversão", icon: <TrendingUp className="text-[#00C853]" /> }
+  ];
+
+  return (
+    <section id="resultados" className="py-32 bg-[#080808] relative">
+      <div className="container mx-auto px-6">
+        <div className="max-w-4xl mx-auto text-center mb-24 reveal">
+          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.6em] mb-8 italic">Proof of Global Authority</h2>
+          <h3 className="text-4xl md:text-7xl font-display text-white mb-6">Faturamento em <span className="text-[#00C853]">Moeda Forte.</span></h3>
+          <p className="text-gray-500 text-lg">Operações reais rodando nos mercados mais valiosos do mundo.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 reveal">
+          {metrics.map((m, i) => (
+            <div key={i} className="p-10 rounded-[2.5rem] bg-zinc-900/50 border border-white/5 hover:border-[#00C853]/30 transition-all group overflow-hidden relative">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-125 transition-transform">
+                {m.icon}
+              </div>
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6">{m.label}</p>
+                <h4 className="text-4xl md:text-5xl font-display text-white mb-2">{m.value}</h4>
+                <p className="text-[#00C853] text-[10px] font-bold uppercase tracking-widest">{m.sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ForWho: React.FC = () => {
-  const profiles = [
-    { title: "Gestores em Busca de Liberdade", desc: "Para quem cansa de ganhar R$ 1.500 por cliente e quer os mesmos $1.500 em dólar pelo mesmo trabalho." },
-    { title: "Experts em Performance", desc: "Para quem já domina as ferramentas e quer sair do amadorismo do mercado brasileiro para a elite global." },
-    { title: "Freelancers de Elite", desc: "Para quem deseja construir uma vitrine internacional que atrai contratos sem precisar 'implorar' por vagas." },
-    { title: "Data-Driven Specialists", desc: "Para quem entende que o tráfego hoje é sobre dados e quer aprender a vender essa inteligência para o exterior." }
+  const personas = [
+    { title: "O Gestor 'Teto'", desc: "Você já domina o tráfego, mas não consegue passar dos R$ 10k/mês porque os clientes brasileiros não têm orçamento para escalar." },
+    { title: "O Operacional Sobrecargado", desc: "Você tem 15 clientes de R$ 1.000. Trabalha 14h por dia e sente que está vendendo sua saúde por migalhas de Real." },
+    { title: "O Visionário em Pausa", desc: "Sabe que o mercado global (USA, Europa, Austrália) é a solução, mas tem medo do inglês ou de não saber onde os clientes estão." }
   ];
 
   return (
     <section id="para-quem" className="py-32 bg-black relative">
       <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto text-center mb-24 reveal">
-          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.5em] mb-8 italic">Público-Alvo</h2>
-          <h3 className="text-4xl md:text-7xl font-display text-white">A Mentoria foi desenhada <span className="text-[#00C853]">exclusivamente para você?</span></h3>
+        <div className="max-w-3xl mb-24 reveal">
+          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.5em] mb-8 italic">O Diagnóstico</h2>
+          <h3 className="text-4xl md:text-7xl font-display text-white leading-tight">Essa mentoria é <br/> <span className="text-[#00C853]">para você que...</span></h3>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
-          {profiles.map((profile, i) => (
-            <div key={i} className="p-8 glass-card rounded-3xl border-white/5 group hover:bg-zinc-900 transition-all duration-500">
-              <h4 className="text-white font-bold uppercase tracking-widest text-sm mb-4 leading-tight group-hover:text-[#D4AF37] transition-colors">{profile.title}</h4>
-              <p className="text-gray-500 text-sm leading-relaxed">{profile.desc}</p>
+
+        <div className="grid lg:grid-cols-3 gap-16 reveal">
+          {personas.map((p, i) => (
+            <div key={i} className="group cursor-default border-l border-zinc-800 pl-8 hover:border-[#00C853] transition-colors duration-700">
+              <span className="text-4xl font-display text-[#D4AF37]">0{i+1}</span>
+              <h4 className="text-xl font-bold text-white mt-6 mb-4 uppercase tracking-tighter">{p.title}</h4>
+              <p className="text-gray-500 leading-relaxed font-light">{p.desc}</p>
             </div>
           ))}
         </div>
@@ -179,29 +210,34 @@ const ForWho: React.FC = () => {
 };
 
 const Deliverables: React.FC = () => {
-  const items = [
-    { title: "Domínio Multi-Plataformas", icon: <Globe size={24} />, desc: "Do zero ao avançado em Meta Ads e Google Ads, além de ensino especializado em Bing Ads e Microsoft Advertising." },
-    { title: "Arquitetura de Tracking", icon: <Database size={24} />, desc: "Configuração profissional de rastreamento (GTM, GA4, API de Conversão) que os clientes internacionais exigem." },
-    { title: "Anti-Subido / Data-Driven", icon: <BrainCircuit size={24} />, desc: "Mentalidade focada em dados. Você não sobe 'campanhazinhas', você gerencia investimentos com base em inteligência." },
-    { title: "Visualização com Looker Studio", icon: <PieChart size={24} />, desc: "Aprenda a criar dashboards de elite que justificam seu fee mensal e impressionam CEOs estrangeiros." },
-    { title: "Negociação Internacional", icon: <MousePointerClick size={24} />, desc: "Aulas práticas de fechamento: como se portar em calls e assinar contratos de $1k, $3k ou $5k USD." },
-    { title: "Vitrine de Ouro", icon: <Layout size={24} />, desc: "Estruturação de portfólio e perfis em plataformas globais para ser caçado por recrutadores." }
+  const steps = [
+    { title: "Engine: Tracking & Data", desc: "Configuração de elite de GTM, GA4 e API. O mercado internacional não aceita amadores que não medem dados.", icon: <Database /> },
+    { title: "Blueprint: Prospecção Multi-Moeda", desc: "Onde e como encontrar empresas USA, Europa e Austrália que pagam em moeda forte.", icon: <Globe /> },
+    { title: "Closing: Negociação & Fees", desc: "Scripts de fechamento e como cobrar fees de $2k USD/EUR por cliente sem tremer na base.", icon: <DollarSign /> },
+    { title: "Scale: Gestão High-Ticket", desc: "Como manter os resultados e escalar as contas sem precisar de uma agência gigante.", icon: <Layers /> }
   ];
 
   return (
-    <section id="entrega" className="py-32 bg-[#0A0A0A] relative border-y border-white/5">
+    <section id="entrega" className="py-32 bg-[#050505] relative border-y border-white/5">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center text-center mb-24 reveal">
-          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.5em] mb-8 italic">Entrega Técnica Profunda</h2>
-          <h3 className="text-4xl md:text-7xl font-display text-white max-w-4xl">Do zero ao <span className="text-[#00C853]">nível sênior internacional.</span></h3>
+        <div className="flex flex-col md:flex-row items-end justify-between mb-24 reveal">
+          <div className="max-w-2xl">
+            <h2 className="text-xs font-bold text-[#00C853] uppercase tracking-[0.6em] mb-8 italic">A Engenharia da Mentoria</h2>
+            <h3 className="text-4xl md:text-7xl font-display text-white">Tudo o que <span className="italic text-[#D4AF37]">você vai aprender.</span></h3>
+          </div>
+          <p className="text-gray-500 max-w-xs mt-8 md:mt-0 uppercase text-[10px] font-bold tracking-widest leading-relaxed">
+            Metodologia testada em Dólar, Euro, CAD e AUD.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
-          {items.map((item, i) => (
-            <div key={i} className="p-10 bg-black/50 border border-white/5 rounded-[2rem] hover:border-[#D4AF37]/30 transition-all duration-500">
-              <div className="text-[#00C853] mb-8">{item.icon}</div>
-              <h4 className="text-xl font-bold text-white mb-4 uppercase tracking-widest">{item.title}</h4>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+        <div className="grid md:grid-cols-2 gap-8 reveal">
+          {steps.map((s, i) => (
+            <div key={i} className="p-12 bg-[#080808] border border-white/5 rounded-3xl hover:border-[#D4AF37]/40 transition-all group">
+              <div className="text-[#00C853] mb-10 w-12 h-12 flex items-center justify-center bg-[#00C853]/10 rounded-xl">
+                {s.icon}
+              </div>
+              <h4 className="text-2xl font-display text-white mb-4">{s.title}</h4>
+              <p className="text-gray-500 font-light leading-relaxed text-sm">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -210,78 +246,30 @@ const Deliverables: React.FC = () => {
   );
 };
 
-const Bonus: React.FC = () => {
-  const bonuses = [
-    { title: "WhatsApp Direto 24/7", icon: <MessageSquare />, desc: "Acesso ao meu número pessoal sem intermediários. Suporte total para dúvidas em tempo real." },
-    { title: "Calls Quinzenais", icon: <Calendar />, desc: "Encontros ao vivo para alinhamento de rota, revisão técnica e análise individual de contas." },
-    { title: "Planilhas e Frameworks", icon: <Layout />, desc: "Meus métodos de organização, planilhas de precificação e controle de escala prontos para uso." },
-    { title: "Clube de Descontos", icon: <Gift />, desc: "Acesso a descontos exclusivos nas principais ferramentas de automação e dados do mercado global." }
-  ];
-
-  return (
-    <section id="bonus" className="py-32 bg-black relative">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto glass-card rounded-[4rem] border-[#00C853]/20 p-16 md:p-24 reveal">
-          <div className="text-center mb-16">
-            <Sparkles className="text-[#D4AF37] mx-auto mb-6" size={40} />
-            <h2 className="text-4xl md:text-6xl font-display text-white mb-6">Bônus de <span className="text-[#00C853]">Escala Acelerada.</span></h2>
-            <p className="text-gray-400 font-light">Ferramentas e suporte que valeriam o dobro do preço da mentoria isoladamente.</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-12">
-            {bonuses.map((b, i) => (
-              <div key={i} className="flex gap-6 items-start">
-                <div className="w-12 h-12 rounded-2xl bg-[#00C853]/10 flex items-center justify-center shrink-0 text-[#00C853]">
-                  {b.icon}
-                </div>
-                <div>
-                  <h5 className="text-white font-bold uppercase tracking-widest text-sm mb-2">{b.title}</h5>
-                  <p className="text-gray-500 text-xs leading-relaxed">{b.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const About: React.FC = () => {
   return (
-    <section id="mentora" className="py-32 bg-[#0A0A0A] overflow-hidden relative">
+    <section id="mentora" className="py-40 bg-black overflow-hidden relative">
       <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
-          <div className="reveal order-2 lg:order-1">
-            <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.5em] mb-10">The Authority</h2>
-            <h3 className="text-5xl md:text-8xl font-display text-white mb-10 leading-[0.9]">Mestre em Educação. <span className="text-gray-600 block">Gestora de Milhões.</span></h3>
-            <p className="text-xl text-gray-400 font-light leading-relaxed mb-12 max-w-xl">
-              Minha formação como Mestre em Educação me permitiu criar o método mais eficiente de transferência de conhecimento do mercado. Não apenas opero <strong className="text-white">R$ 1.2M+ mensais</strong> globalmente, eu sei como fazer VOCÊ operar e fechar contratos de alto valor. Sete anos de mercado me provaram que o resultado é uma ciência exata.
-            </p>
-            <div className="flex flex-wrap gap-16">
-              <div>
-                <p className="text-4xl font-display text-white tracking-tighter">7 ANOS</p>
-                <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-2">No Campo de Batalha</p>
-              </div>
-              <div>
-                <p className="text-4xl font-display text-white tracking-tighter">1.2M+</p>
-                <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-2">Investidos em Jan/2025</p>
-              </div>
-            </div>
+        <div className="max-w-5xl mx-auto text-center reveal">
+          <div className="inline-block px-4 py-1 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.4em] mb-12">
+            The Mentor
           </div>
-          
-          <div className="relative reveal order-1 lg:order-2 flex justify-center">
-            <div className="relative z-10 w-full max-w-lg aspect-[4/5] rounded-[3rem] overflow-hidden grayscale border-4 border-white/5 shadow-[0_0_50px_rgba(212,175,55,0.1)] transition-all duration-700 hover:grayscale-0 hover:scale-[1.02]">
-               <img 
-                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1200" 
-                 className="w-full h-full object-cover object-center" 
-                 alt="Sua Mentora - Foto PB Profissional" 
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-               <div className="absolute bottom-12 left-12">
-                  <p className="text-white font-display text-4xl italic tracking-wide">A Mentora</p>
-               </div>
+          <h3 className="text-5xl md:text-8xl font-display text-white mb-10 leading-[0.9] tracking-tighter">
+            Mestre em <span className="italic text-[#D4AF37]">Educação.</span> <br /> 
+            <span className="text-gray-700">Gestora de Milhões.</span>
+          </h3>
+          <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-16 mx-auto max-w-2xl">
+            Com a didática de um mestrado e a experiência de quem já faturou em <strong className="text-white">Dólar, Euro, CAD e AUD</strong>, eu não apenas opero milhões; eu sei como te ensinar a dominar o mundo.
+          </p>
+          <div className="flex flex-wrap justify-center gap-12 md:gap-24">
+            <div className="flex flex-col items-center">
+              <span className="text-4xl md:text-6xl font-display text-white">+04</span>
+              <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em] mt-2">Continentes Atuantes</span>
             </div>
-            <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-[#D4AF37]/10 blur-[120px] -z-1" />
+            <div className="flex flex-col items-center">
+              <span className="text-4xl md:text-6xl font-display text-white">4 Moedas</span>
+              <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em] mt-2">Faturamento Global</span>
+            </div>
           </div>
         </div>
       </div>
@@ -291,48 +279,53 @@ const About: React.FC = () => {
 
 const Admission: React.FC = () => {
   return (
-    <section id="admissao" className="py-40 bg-black relative overflow-hidden">
-      <div className="container mx-auto px-6 text-center">
-        <div className="max-w-4xl mx-auto reveal">
-          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.6em] mb-12 italic">Seleção Curada</h2>
-          <h3 className="text-5xl md:text-8xl lg:text-9xl font-display text-white mb-16 leading-none tracking-tighter">Entre para o 1% do mercado global.</h3>
+    <section id="admissao" className="py-40 bg-black relative overflow-hidden border-t border-white/5">
+      <div className="container mx-auto px-6 text-center flex flex-col items-center">
+        <div className="max-w-5xl mx-auto reveal flex flex-col items-center">
+          <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-[0.6em] mb-16 italic">Critérios de Admissão</h2>
           
-          <div className="mb-24 text-left">
-            <p className="text-2xl md:text-4xl text-gray-300 font-light mb-16 leading-snug">
-              Para garantir o acompanhamento individual e o pacto de resultado incondicional, o processo de admissão é rigoroso. Eu não busco apenas alunos, busco parceiros de jornada prontos para a escala internacional. <span className="text-white border-b-2 border-[#00C853] font-medium inline-block mt-4">Esse alguém é você?</span>
+          <div className="text-left max-w-5xl mx-auto">
+            <h3 className="text-4xl md:text-7xl lg:text-8xl font-display font-semibold text-white mb-12 leading-[1.1] tracking-tight text-center">
+              FAÇA PARTE DO 1% DE GESTORES QUE ATUAM GLOBALMENTE
+            </h3>
+
+            <p className="text-xl md:text-3xl text-gray-400 font-light mb-24 leading-relaxed text-center max-w-4xl mx-auto">
+              Para garantir o acompanhamento individual e o pacto de resultado incondicional, o processo de admissão é rigoroso. Eu não busco apenas alunos, busco parceiros de jornada prontos para a escala internacional.
             </p>
             
-            <div className="grid md:grid-cols-2 gap-12">
-               <div className="flex gap-6 items-start">
-                  <div className="w-10 h-10 rounded-full bg-[#00C853]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="text-[#00C853]" size={20} />
+            <div className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-20">
+               <div className="flex gap-8 items-start">
+                  <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
+                    <CheckCircle2 className="text-[#00C853]" size={28} />
                   </div>
                   <div>
-                    <h5 className="text-white font-bold uppercase tracking-widest mb-2 text-sm">Alinhamento 1-on-1</h5>
-                    <p className="text-xs text-gray-500 leading-relaxed font-medium">Sessão individual para diagnosticar sua operação e traçar o plano de transição global em 30 dias.</p>
+                    <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Mentalidade Global</h5>
+                    <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Foco absoluto em deixar o amadorismo do Real para trás e abraçar o lucro em moeda forte.</p>
                   </div>
                </div>
-               <div className="flex gap-6 items-start">
-                  <div className="w-10 h-10 rounded-full bg-[#00C853]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="text-[#00C853]" size={20} />
+               <div className="flex gap-8 items-start">
+                  <div className="w-14 h-14 rounded-full bg-[#00C853]/10 flex items-center justify-center shrink-0 border border-[#00C853]/20">
+                    <CheckCircle2 className="text-[#00C853]" size={28} />
                   </div>
                   <div>
-                    <h5 className="text-white font-bold uppercase tracking-widest mb-2 text-sm">Acompanhamento Vitalício</h5>
-                    <p className="text-xs text-gray-500 leading-relaxed font-medium">Meu suporte só termina quando o seu primeiro contrato em dólar for assinado e registrado.</p>
+                    <h5 className="text-white font-bold uppercase tracking-widest mb-4 text-sm">Compromisso com o Método</h5>
+                    <p className="text-xs text-gray-500 leading-relaxed font-semibold uppercase tracking-widest">Seguir o passo-a-passo técnico (Tracking, Data, Closing) para garantir o ROI internacional.</p>
                   </div>
                </div>
             </div>
           </div>
 
-          <a 
-            href={WHATSAPP_LINK} 
-            className="group relative inline-flex items-center gap-6 px-20 py-10 bg-white text-black font-black text-sm uppercase tracking-[0.4em] rounded-full hover:bg-[#00C853] hover:text-white transition-all duration-500 shadow-[0_40px_100px_rgba(255,255,255,0.1)]"
-          >
-            Iniciar Minha Aplicação
-            <MoveRight className="group-hover:translate-x-3 transition-transform" />
-          </a>
+          <div className="mt-24">
+            <a 
+              href={WHATSAPP_LINK} 
+              className="group relative inline-flex items-center gap-6 px-24 py-12 bg-white text-black font-black text-sm uppercase tracking-[0.4em] rounded-full hover:bg-[#00C853] hover:text-white transition-all duration-500 shadow-[0_40px_100px_rgba(255,255,255,0.05)]"
+            >
+              Aplicar para Seleção
+              <MoveRight className="group-hover:translate-x-3 transition-transform" />
+            </a>
+          </div>
           
-          <p className="mt-16 text-gray-800 text-[10px] font-black uppercase tracking-[0.4em]">Faturamento em dólar não é sorte, é método acompanhado.</p>
+          <p className="mt-16 text-gray-800 text-[10px] font-black uppercase tracking-[0.4em]">Exclusividade e suporte individual garantidos.</p>
         </div>
       </div>
     </section>
@@ -347,14 +340,15 @@ const Footer: React.FC = () => {
           <span className="text-2xl font-display font-bold tracking-[0.5em] text-white">
             O CÓDIGO <span className="text-[#D4AF37]">DÓLAR</span>
           </span>
-          <div className="flex gap-12 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-             <a href="#" className="hover:text-white transition-colors">Processo Seletivo</a>
-             <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
-             <a href="#" className="hover:text-white transition-colors">Suporte Elite</a>
-          </div>
+          <a 
+            href={WHATSAPP_LINK}
+            className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00C853] hover:text-white transition-colors"
+          >
+            Aplicar para a próxima turma →
+          </a>
         </div>
         <p className="text-gray-800 text-[9px] uppercase font-bold tracking-[0.3em] max-w-2xl mx-auto leading-relaxed">
-          Programa de acompanhamento individual focado em performance internacional e transição de mercado em moeda forte. Copyright © {new Date().getFullYear()} - O Código Dólar.
+          Programa focado em performance internacional multi-moeda. Copyright © {new Date().getFullYear()} - O Código Dólar.
         </p>
       </div>
     </footer>
@@ -365,13 +359,13 @@ const App: React.FC = () => {
   useReveal();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] selection:bg-[#00C853]/30 selection:text-[#00C853] relative">
+    <div className="min-h-screen bg-black selection:bg-[#00C853]/30 selection:text-[#00C853] relative">
       <Navbar />
       <main>
         <Hero />
+        <Results />
         <ForWho />
         <Deliverables />
-        <Bonus />
         <About />
         <Admission />
       </main>
