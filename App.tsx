@@ -34,6 +34,7 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     nome: '',
+    telefone: '',
     instagram: '',
     faturamento: '',
     ingles: '',
@@ -51,46 +52,48 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
+    // Payload enriquecido para n8n e Supabase
     const payload = {
       ...formData,
       origem: "Landing Page O Código Dólar",
       servico: "Mentoria High-Ticket",
-      timestamp: new Date().toLocaleString('pt-BR'),
+      timestamp: new Date().toISOString(), // ISO format é melhor para bancos de dados
       url_origem: window.location.href
     };
 
     try {
-      // Disparo em paralelo para máxima performance e garantia de entrega
-      const sbPromise = supabase.from('leads').insert([formData]);
-      
+      // 1. Enviar para n8n (Confirmado pelo usuário que funciona)
       const n8nPromise = fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      // Redundância extra: Beacon API (funciona mesmo se o browser fechar subitamente)
+      // 2. Enviar para Supabase (Garantindo payload completo)
+      const sbPromise = supabase
+        .from('leads')
+        .insert([payload])
+        .select();
+
+      // Redundância Beacon
       if (navigator.sendBeacon) {
         const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
         navigator.sendBeacon(N8N_WEBHOOK_URL, blob);
       }
 
-      const results = await Promise.allSettled([sbPromise, n8nPromise]);
-      
-      // Log de depuração silencioso
-      results.forEach((res, index) => {
-        if (res.status === 'rejected') {
-          console.warn(`Alerta de integração [${index === 0 ? 'Supabase' : 'n8n'}]:`, res.reason);
-        }
-      });
+      const [n8nRes, sbRes] = await Promise.all([n8nPromise, sbPromise]);
+
+      // Log específico para Supabase
+      if (sbRes.error) {
+        console.error("Erro Supabase Detalhado:", sbRes.error.message, sbRes.error.details);
+      } else {
+        console.log("Lead salvo com sucesso no Supabase.");
+      }
 
     } catch (error) {
-      console.error("Falha na comunicação de dados:", error);
+      console.error("Erro crítico na submissão:", error);
     }
 
-    // Transição suave para tela de sucesso
     setTimeout(() => {
       setIsSubmitting(false);
       setIsFinished(true);
@@ -98,7 +101,7 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
   };
 
   const openWhatsAppFallback = () => {
-    const text = `*Nova Aplicação: O Código Dólar*%0A%0A*Nome:* ${formData.nome}%0A*Instagram:* ${formData.instagram}%0A*Faturamento:* ${formData.faturamento}%0A*Inglês:* ${formData.ingles}%0A*Investimento:* ${formData.investimento}%0A*Motivo:* ${formData.motivo}`;
+    const text = `*Nova Aplicação: O Código Dólar*%0A%0A*Nome:* ${formData.nome}%0A*Telefone:* ${formData.telefone}%0A*Instagram:* ${formData.instagram}%0A*Faturamento:* ${formData.faturamento}%0A*Inglês:* ${formData.ingles}%0A*Investimento:* ${formData.investimento}%0A*Motivo:* ${formData.motivo}`;
     window.open(`https://wa.me/${WHATSAPP_DESTINO}?text=${text}`, '_blank');
   };
 
@@ -107,7 +110,15 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
     setTimeout(() => {
       setIsFinished(false);
       setStep(1);
-      setFormData({ nome: '', instagram: '', faturamento: '', ingles: '', investimento: '', motivo: '' });
+      setFormData({ 
+        nome: '', 
+        telefone: '',
+        instagram: '', 
+        faturamento: '', 
+        ingles: '', 
+        investimento: '', 
+        motivo: '' 
+      });
     }, 500);
   };
 
@@ -153,6 +164,10 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                     <div className="group">
                       <label className="text-[9px] uppercase font-bold text-gray-500 ml-4 mb-2 block tracking-widest">Nome Completo</label>
                       <input type="text" placeholder="Ex: João Silva" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-[#00C853] outline-none transition-all" value={formData.nome} onChange={e => setFormData({...formData, nome: e.target.value})} />
+                    </div>
+                    <div className="group">
+                      <label className="text-[9px] uppercase font-bold text-gray-500 ml-4 mb-2 block tracking-widest">WhatsApp / Telefone</label>
+                      <input type="tel" placeholder="(00) 00000-0000" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-[#00C853] outline-none transition-all" value={formData.telefone} onChange={e => setFormData({...formData, telefone: e.target.value})} />
                     </div>
                     <div className="group">
                       <label className="text-[9px] uppercase font-bold text-gray-500 ml-4 mb-2 block tracking-widest">Instagram Profissional</label>
@@ -204,7 +219,7 @@ const QualificationModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
               <div className="mt-12 flex items-center justify-between gap-4">
                 {step > 1 && <button onClick={handleBack} className="text-gray-500 hover:text-white font-bold text-[10px] uppercase tracking-widest transition-colors">Voltar</button>}
                 <div className="flex-1" />
-                {step === 1 && <button disabled={!formData.nome || !formData.instagram} onClick={handleNext} className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-widest disabled:opacity-30 flex items-center gap-2 transition-all active:scale-95">Próximo <ChevronRight size={14} /></button>}
+                {step === 1 && <button disabled={!formData.nome || !formData.instagram || !formData.telefone} onClick={handleNext} className="px-10 py-4 bg-white text-black rounded-full font-black text-[10px] uppercase tracking-widest disabled:opacity-30 flex items-center gap-2 transition-all active:scale-95">Próximo <ChevronRight size={14} /></button>}
                 {step === 5 && <button onClick={handleSubmit} disabled={isSubmitting || !formData.motivo} className="px-10 py-4 bg-[#00C853] text-black rounded-full font-black text-[10px] uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">{isSubmitting ? "Sincronizando..." : "Enviar Aplicação"} {!isSubmitting && <Check size={14} />}</button>}
               </div>
             </>
